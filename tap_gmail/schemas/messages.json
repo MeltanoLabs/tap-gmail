@@ -1,0 +1,104 @@
+{
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The immutable ID of the message."
+    },
+    "threadId": {
+      "type": "string",
+      "description": "The ID of the thread the message belongs to."
+    },
+    "labelIds": {
+      "description": "List of IDs of labels applied to this message.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "snippet": {
+      "type": "string",
+      "description": "A short part of the message text."
+    },
+    "historyId": {
+      "type": "string",
+      "description": "The ID of the last history record that modified this message."
+    },
+    "internalDate": {
+      "type": "string",
+      "description": "The internal message creation timestamp (epoch ms), which determines ordering in the inbox. For normal SMTP-received email, this represents the time the message was originally accepted by Google, which is more reliable than the Date header. However, for API-migrated mail, it can be configured by client to be based on the Date header."
+    },
+    "payload": { "$ref": "#/definitions/message_part" },
+    "sizeEstimate": {
+      "type": "integer",
+      "description": "Estimated size in bytes of the message."
+    },
+    "raw": {
+      "type": "string",
+      "description": "The entire email message in an RFC 2822 formatted and base64url encoded string. Returned in messages.get and drafts.get responses when the format=RAW parameter is supplied. A base64-encoded string."
+    }
+  },
+  "definitions": {
+    "header": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The name of the header before the : separator. For example, To."
+        },
+        "value": {
+          "type": "string",
+          "description": "The value of the header after the : separator. For example, someuser@example.com."
+        }
+      }
+    },
+    "message_part_body": {
+      "type": "object",
+      "properties": {
+        "attachmentId": {
+          "type": "string",
+          "description": "When present, contains the ID of an external attachment that can be retrieved in a separate messages.attachments.get request. When not present, the entire content of the message part body is contained in the data field."
+        },
+        "size": {
+          "type": "integer",
+          "description": "Number of bytes for the message part data (encoding notwithstanding)."
+        },
+        "data": {
+          "type": "string",
+          "description": "The body data of a MIME message part as a base64url encoded string. May be empty for MIME container types that have no message body or when the body data is sent as a separate attachment. An attachment ID is present if the body data is contained in a separate attachment. A base64-encoded string."
+        }
+      },
+      "description": "The message part body for this part, which may be empty for container MIME message parts."
+    },
+    "message_part": {
+      "type": "object",
+      "properties": {
+        "partId": {
+          "type": "string",
+          "description": "The immutable ID of the message part."
+        },
+        "mimeType": {
+          "type": "string",
+          "description": "The MIME type of the message part."
+        },
+        "filename": {
+          "type": "string",
+          "description": "The filename of the attachment. Only present if this message part represents an attachment."
+        },
+        "headers": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/header" },
+          "description": "List of headers on this message part. For the top-level message part, representing the entire message payload, it will contain the standard RFC 2822 email headers such as To, From, and Subject."
+        },
+        "body": { "$ref": "#/definitions/message_part_body" },
+        "parts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/message_part"
+          }
+        }
+      },
+      "description": "A single MIME message part."
+    }
+  }
+}

@@ -12,20 +12,18 @@ class GmailAuthenticator(OAuthAuthenticator, metaclass=SingletonMeta):
     @property
     def oauth_request_body(self) -> dict:
         """Define the OAuth request body for the Gmail API."""
-        # TODO: Define the request body needed for the API.
+        oauth_credentials = self.config.get("oauth_credentials", {})
         return {
-            'resource': 'https://analysis.windows.net/powerbi/api',
-            'scope': self.oauth_scopes,
-            'client_id': self.config["client_id"],
-            'username': self.config["username"],
-            'password': self.config["password"],
-            'grant_type': 'password',
+            "grant_type": "refresh_token",
+            "client_id": oauth_credentials.get("client_id"),
+            "client_secret": oauth_credentials.get("client_secret"),
+            "refresh_token": oauth_credentials.get("refresh_token"),
         }
 
     @classmethod
     def create_for_stream(cls, stream) -> "GmailAuthenticator":
         return cls(
             stream=stream,
-            auth_endpoint="TODO: OAuth Endpoint URL",
-            oauth_scopes="TODO: OAuth Scopes",
+            auth_endpoint="https://oauth2.googleapis.com/token",
+            oauth_scopes="https://www.googleapis.com/auth/gmail.readonly",
         )

@@ -1,9 +1,11 @@
 # Secrets and internal config files
 **/.secrets/*
+.env
 
 # Ignore meltano internal cache and sqlite systemdb
-
 .meltano/
+plugins/
+output/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
