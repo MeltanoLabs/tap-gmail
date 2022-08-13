@@ -1,21 +1,22 @@
 version: 1
 send_anonymous_usage_stats: true
-project_id: "tap-gmail"
+project_id: tap-gmail
 plugins:
   extractors:
-  - name: "tap-gmail"
-    namespace: "tap_gmail"
+  - name: tap-gmail
+    namespace: tap_gmail
     pip_url: -e .
     capabilities:
     - state
     - catalog
     - discover
-    config: {}
     settings:
     - name: oauth_credentials.client_id
     - name: oauth_credentials.client_secret
     - name: oauth_credentials.refresh_token
     - name: user_id
+    select:
+    - messages.*
   loaders:
   - name: target-jsonl
     variant: andyh1203
