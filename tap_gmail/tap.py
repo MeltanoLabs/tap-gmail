@@ -31,6 +31,12 @@ class TapGmail(Tap):
             description="Your google refresh token",
         ),
         th.Property("user_id", th.StringType, description="Your Gmail User ID"),
+        th.Property(
+            "messages.include_spam_trash",
+            th.BooleanType,
+            description="Include messages from SPAM and TRASH in the results.",
+            default=False,
+        ),
     ).to_dict()
 
     def discover_streams(self) -> List[Stream]:

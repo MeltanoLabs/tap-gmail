@@ -1,7 +1,7 @@
 """Stream type classes for tap-gmail."""
 
 from pathlib import Path
-from typing import Optional
+from typing import Any, Dict, Optional
 
 from tap_gmail.client import GmailStream
 
@@ -26,6 +26,13 @@ class MessageListStream(GmailStream):
     def get_child_context(self, record: dict, context: Optional[dict]) -> dict:
         """Return a context dictionary for child streams."""
         return {"message_id": record["id"]}
+
+    def get_url_params(
+        self, context: Optional[dict], next_page_token: Optional[Any]
+    ) -> Dict[str, Any]:
+        params = super().get_url_params(context, next_page_token)
+        params.update({"includeSpamTrash": self.config["messages.include_spam_trash"]})
+        return params
 
 
 class MessagesStream(GmailStream):
