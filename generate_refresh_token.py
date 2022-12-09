@@ -33,7 +33,7 @@ DEFAULT_CLIENT_SECRET = None
 SCOPE = "https://www.googleapis.com/auth/gmail.readonly"
 # The redirect URI set for the given Client ID. The redirect URI for Client ID
 # generated for an installed application will always have this value.
-_REDIRECT_URI = "urn:ietf:wg:oauth:2.0:oob"
+_REDIRECT_URI = "http://localhost"
 
 parser = argparse.ArgumentParser(
     description="Generates a refresh token with " "the provided credentials."
