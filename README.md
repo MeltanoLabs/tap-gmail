@@ -35,7 +35,8 @@ A full list of supported settings and capabilities is available by running: `tap
 - [ ] `Developer TODO:` Update the below as needed to correctly describe the install procedure. For instance, if you do not have a PyPi repo, or if you want users to directly install from your git repo, you can modify this step as appropriate.
 
 ```bash
-pipx install tap-gmail
+poetry install
+poetry run tap-gmail
 ```
 
 ## Configuration
