@@ -7,6 +7,7 @@ import requests
 from memoization import cached
 from singer_sdk.helpers.jsonpath import extract_jsonpath
 from singer_sdk.streams import RESTStream
+from singer_sdk._singerlib import resolve_schema_references
 
 from tap_gmail.auth import GmailAuthenticator
 
@@ -23,6 +24,16 @@ class GmailStream(RESTStream):
     def authenticator(self) -> GmailAuthenticator:
         """Return a new authenticator object."""
         return GmailAuthenticator.create_for_stream(self)
+
+    @property
+    def schema(self) -> dict:
+        """Get schema.
+        We are waiting on https://gitlab.com/meltano/sdk/-/issues/299 this works
+        well until then
+        Returns:
+            JSON Schema dictionary for this stream.
+        """
+        return resolve_schema_references(self._schema)
 
     @property
     def http_headers(self) -> dict:
