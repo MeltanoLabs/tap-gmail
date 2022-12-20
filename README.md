@@ -1,29 +1,45 @@
-# tap-gmail
+# `tap-gmail`
 
-`tap-gmail` is a Singer tap for Gmail.
+Gmail tap class.
 
-Built with the [Meltano Tap SDK](https://sdk.meltano.com) for Singer Taps.
+Built with the [Meltano SDK](https://sdk.meltano.com) for Singer Taps and Targets.
+
+## Capabilities
+
+* `catalog`
+* `state`
+* `discover`
+* `about`
+* `stream-maps`
+* `schema-flattening`
+
+## Settings
+
+| Setting                        | Required | Default | Description |
+|:-------------------------------|:--------:|:-------:|:------------|
+| oauth_credentials.client_id    | False    | None    | Your google client_id |
+| oauth_credentials.client_secret| False    | None    | Your google client_secret |
+| oauth_credentials.refresh_token| False    | None    | Your google refresh token |
+| user_id                        | False    | me      | The user's email address. The special value me can be used to indicate the authenticated user. More info [here](https://developers.google.com/gmail/api/reference/rest/v1/users/getProfile#path-parameters) |
+| messages.include_spam_trash    | False    |       0 | Include messages from SPAM and TRASH in the results. |
+| stream_maps                    | False    | None    | Config object for stream maps capability. For more information check out [Stream Maps](https://sdk.meltano.com/en/latest/stream_maps.html). |
+| stream_map_config              | False    | None    | User-defined config values to be used within map expressions. |
+| flattening_enabled             | False    | None    | 'True' to enable schema flattening and automatically expand nested properties. |
+| flattening_max_depth           | False    | None    | The max depth to flatten schemas. |
+
+A full list of supported settings and capabilities is available by running: `tap-gmail --about`
+
 
 ## Installation
 
 - [ ] `Developer TODO:` Update the below as needed to correctly describe the install procedure. For instance, if you do not have a PyPi repo, or if you want users to directly install from your git repo, you can modify this step as appropriate.
 
 ```bash
-pipx install tap-gmail
+poetry install
+poetry run tap-gmail
 ```
 
 ## Configuration
-
-### Accepted Config Options
-
-- [ ] `Developer TODO:` Provide a list of config options accepted by the tap.
-
-A full list of supported settings and capabilities for this
-tap is available by running:
-
-```bash
-tap-gmail --about
-```
 
 ### Configure using environment variables
 
@@ -33,7 +49,8 @@ environment variable is set either in the terminal context or in the `.env` file
 
 ### Source Authentication and Authorization
 
-- [ ] `Developer TODO:` If your tap requires special access on the source system, or any special authentication requirements, provide those here.
+Look at the ./generate_refresh_token.py file to generate a refresh token	
+
 
 ## Usage
 
