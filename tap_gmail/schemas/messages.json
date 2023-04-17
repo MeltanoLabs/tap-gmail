@@ -36,6 +36,59 @@
     "raw": {
       "type": "string",
       "description": "The entire email message in an RFC 2822 formatted and base64url encoded string. Returned in messages.get and drafts.get responses when the format=RAW parameter is supplied. A base64-encoded string."
+    },
+    "parsed": {
+      "type": "object",
+      "properties": {
+        "from": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "The name of the sender."
+            },
+            "email": {
+              "type": "string",
+              "description": "The email address of the sender."
+            }
+          }
+        },
+        "to": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "The name of the recipient."
+            },
+            "email": {
+              "type": "string",
+              "description": "The email address of the recipient."
+            }
+          }
+        },
+        "subject": {
+          "type": "string",
+          "description": "The subject of the message."
+        },
+        "date": {
+          "type": "string",
+          "description": "The date in ISO 8601 format. For example, 2014-10-02T15:01:23."
+        },
+        "body": {
+          "type": "object",
+          "properties": {
+            "text": {
+              "type": "string",
+              "description": "The HTML body of the message."
+            },
+            "html": {
+              "type": "string",
+              "description": "The text body of the message."
+            }
+          }
+        }
+      },
+      "description": "The parsed email structure in the message parts."
     }
   },
   "definitions": {
