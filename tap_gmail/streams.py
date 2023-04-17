@@ -4,6 +4,7 @@ from base64 import urlsafe_b64decode
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, Optional
+from email.utils import parseaddr
 
 from bs4 import BeautifulSoup
 from tap_gmail.client import GmailStream
@@ -63,9 +64,32 @@ class MessagesStream(GmailStream):
         for record in super().get_records(context):
             yield {
                 **record,
-                "date": datetime.utcfromtimestamp(int(record.get("internalDate", "0"))/1000).isoformat(),
-                "body": self._body_from_message_part(record.get("payload", {}))
+                "parsed": self._parse_message(record)
             }
+
+    def _parse_message(self, record):
+        raw_date = record.get("internalDate", "0")
+        raw_payload = record.get("payload", {})
+        raw_headers = {
+            key: value
+            for (key, value) in (
+                (header.get("name"), header.get("value"))
+                for header
+                in raw_payload.get("headers", [])
+            )
+        }
+
+        return {
+            "from": self._parse_address(raw_headers.get("From", "")),
+            "to": self._parse_address(raw_headers.get("To", "")),
+            "subject": raw_headers.get("Subject", ""),
+            "date": datetime.utcfromtimestamp(int(raw_date) /1000).isoformat(),
+            "body": self._body_from_message_part(raw_payload)
+        }
+
+    def _parse_address(self, address):
+        name, email = parseaddr(address)
+        return {"name": name, "email": email}
 
     def _body_from_message_part(self, part):
         base64_data = part.get("body", {}).get("data")
