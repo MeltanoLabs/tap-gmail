@@ -99,7 +99,7 @@ class MessagesStream(GmailStream):
             return {"text": data, "html": None}
 
         if part.get("mimeType") == "text/html":
-            text = BeautifulSoup(data).get_text()
+            text = BeautifulSoup(data, features="html.parser").get_text()
             return {"text": text, "html": data}
 
         body = {"text": None, "html": None}
