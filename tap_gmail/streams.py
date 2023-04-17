@@ -30,9 +30,11 @@ class MessageListStream(GmailStream):
     def get_url_params(
         self, context: Optional[dict], next_page_token: Optional[Any]
     ) -> Dict[str, Any]:
+        config = self.config.get("messages", {})
+
         params = super().get_url_params(context, next_page_token)
-        params["includeSpamTrash"]=self.config["messages.include_spam_trash"]
-        params["q"]=self.config.get("messages.q")
+        params["includeSpamTrash"] = config.get("include_spam_trash")
+        params["q"] = config.get("q")
         return params
 
 
