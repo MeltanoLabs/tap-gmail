@@ -43,8 +43,8 @@ class MessageListStream(GmailStream):
 
 
 class MessagesStream(GmailStream):
-
     name = "messages"
+    primary_keys = ["id"]
     replication_key = None
     schema_filepath = SCHEMAS_DIR / "messages.json"
     parent_stream_type = MessageListStream
@@ -62,10 +62,7 @@ class MessagesStream(GmailStream):
         Each row emitted should be a dictionary of property names to their values.
         """
         for record in super().get_records(context):
-            yield {
-                **record,
-                "parsed": self._parse_message(record)
-            }
+            yield {**record, "parsed": self._parse_message(record)}
 
     def _parse_message(self, record):
         raw_date = record.get("internalDate", "0")
@@ -74,8 +71,7 @@ class MessagesStream(GmailStream):
             key: value
             for (key, value) in (
                 (header.get("name"), header.get("value"))
-                for header
-                in raw_payload.get("headers", [])
+                for header in raw_payload.get("headers", [])
             )
         }
 
@@ -83,8 +79,8 @@ class MessagesStream(GmailStream):
             "from": self._parse_address(raw_headers.get("From", "")),
             "to": self._parse_address(raw_headers.get("To", "")),
             "subject": raw_headers.get("Subject", ""),
-            "date": datetime.utcfromtimestamp(int(raw_date) /1000).isoformat(),
-            "body": self._body_from_message_part(raw_payload)
+            "date": datetime.utcfromtimestamp(int(raw_date) / 1000).isoformat(),
+            "body": self._body_from_message_part(raw_payload),
         }
 
     def _parse_address(self, address):
