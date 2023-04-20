@@ -1,6 +1,6 @@
 [tool.poetry]
-name = "tap-gmail"
-version = "0.0.1"
+name = "meltanolabs-tap-gmail"
+version = "0.0.0"
 description = "`tap-gmail` is a Singer tap for Gmail, built with the Meltano SDK for Singer Taps."
 authors = ["Ken Payne"]
 keywords = [
@@ -8,9 +8,13 @@ keywords = [
     "Gmail",
 ]
 license = "Apache 2.0"
+packages = [
+    { include = "tap_gmail" },
+]
+
 
 [tool.poetry.dependencies]
-python = "<3.11,>=3.7.1"
+python = "<3.12,>=3.7.1"
 requests = "^2.25.1"
 singer-sdk = "^0.8.0"
 
@@ -30,9 +34,14 @@ multi_line_output = 3 # Vertical Hanging Indent
 src_paths = "tap_gmail"
 
 [build-system]
-requires = ["poetry-core>=1.0.8"]
-build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core>=1.0.8", "poetry-dynamic-versioning"]
+build-backend = "poetry_dynamic_versioning.backend"
 
 [tool.poetry.scripts]
 # CLI declaration
 tap-gmail = 'tap_gmail.tap:TapGmail.cli'
+
+[tool.poetry-dynamic-versioning]
+enable = true
+vcs = "git"
+style = "semver"
